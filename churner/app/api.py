@@ -3,7 +3,7 @@ from flask import Flask, request
 from inference import Predictor
 
 # Paramètres
-config_path = "/Users/bguedou/churner-ml/config.yaml"
+config_path = "/usr/src/app/config.yaml"
 with open(config_path, 'r') as file:
     config = yaml.safe_load(file)
     
@@ -17,6 +17,10 @@ def prediction_pipeline():
     input_dict = request.json
     response = predictor.inference_pipeline(input_dict)
     return response
+
+@app.route('/', methods=['GET'])
+def hello():
+    return 'Hello on main root !'
 
 @app.route('/serving/healthcheck', methods=['GET'])
 def healthcheck():

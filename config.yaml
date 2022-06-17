@@ -1,6 +1,6 @@
 seed: 42
 data:
-  datapath: '/Users/bguedou/churner-ml/data/WA_Fn-UseC_-Telco-Customer-Churn.csv'
+  datapath: 'data/WA_Fn-UseC_-Telco-Customer-Churn.csv'
   label: 'Churn'
   numerical: 
       - 'tenure'
@@ -24,10 +24,11 @@ data:
     - 'PaperlessBilling' 
     - 'PaymentMethod'
 model:
-    savepath: '/Users/bguedou/atut/churner/saved'
-    k: 5
+    savepath: './saved'
+    k: 3
+    n_trials: 5
     name: 'churner_model.pkl'
-    test-set-percentage: 0.3
+    test-set-percentage: 0.25
     calibration-set-percentage: 0.5
 inference:
     alert_threshold: 0.7

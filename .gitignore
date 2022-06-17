@@ -1,6 +1,8 @@
-**/*.pkl
+#**/*.pkl
 **/__pycache__
 **/*cache*
 **/mlruns
 **/logs
 **/.ipynb_checkpoints
+**/data
+**/venv

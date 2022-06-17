@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/Users/bguedou/churner-ml/")
+sys.path.append("/usr/src/app")
 
 import os
 import pickle
