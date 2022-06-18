@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api_prediction
+  name: api-prediction-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api_prediction
+  template:
+    metadata:
+      labels:
+        app: api_prediction
+    spec:
+      containers:
+        - image: gcr.io/test-projet-346910/bootcamp_back:v1
+          name: api-prediction-img
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5555
+              protocol: TCP
+          resources:
+            limits:
+              cpu: "250m"
+              memory: 300Mi
+            requests:
+              cpu: "150m"
+              memory: 150Mi
