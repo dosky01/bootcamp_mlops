@@ -10,4 +10,4 @@ spec:
   - port: 5555
     targetPort: 5555
   selector:
-    app: api_prediction
+    app: boot-mlops

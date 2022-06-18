@@ -10,9 +10,9 @@ on:
 env:
   GKE_CLUSTER: bootcamp-mlops
   GKE_ZONE: asia-southeast1-a
-  DEPLOYMENT_NAME: boot_mlops
+  DEPLOYMENT_NAME: boot-mlops
   IMAGE: bootcamp_back
-  TAG: v2
+  TAG: v3
 
 
 jobs:
