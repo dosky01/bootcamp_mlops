@@ -6,6 +6,15 @@ on:
   pull_request:
     branches:
     - dev
+
+env:
+  GKE_CLUSTER: bootcamp-mlops
+  GKE_ZONE: asia-southeast1-a
+  DEPLOYMENT_NAME: boot_mlops
+  IMAGE: bootcamp_back
+  TAG: v2
+
+
 jobs:
   build-test-code:
     name: setup and test
@@ -14,11 +23,53 @@ jobs:
     steps:
       - name: Git clone
         uses: actions/checkout@v3
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
           python-version: 3.10.0
+
       - name: install python packages
         run: pip install -r requirements.txt
+
       - name: unit tests
         run: pytest
+
+      - name: Build Docker Image
+        run: make build 
+
+      - name: Re-tag Docker image
+        run: docker tag $IMAGE gcr.io/$PROJECT_ID/$IMAGE:$TAG
+      
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+        with:
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          project_id: ${{ secrets.GKE_PROJECT }}
+
+      - name: Configure Docker
+        run: gcloud --quiet auth configure-docker
+
+      - name: Push image to GCR
+        run: docker push gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE:$TAG
+
+      - name: Get GKE Credentials
+        run: |-
+          gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project ${{ secrets.GKE_PROJECT }}
+          kubectl get nodes
+
+      - name: Create namespace if it is not existant
+        run: kubectl apply -f churner/k8s/namespaces.yaml
+
+      - name: Create a deployment for the application to GKE cluster
+        run: |-
+          kubectl create deployment $DEPLOYMENT_NAME \
+            --image=gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE:$TAG \
+            --namespace=mlops-test --replicas=1
+
+      - name: Create a service for the application
+        run: |-
+          kubectl apply -f churner/k8s/api_svc.yaml --namespace=mlops-test
+
+      - name: Check if the service is good
+        run: kubectl get services -n mlops-test
