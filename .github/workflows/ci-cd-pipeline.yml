@@ -1,0 +1,24 @@
+name: churner ci-cd pipeline
+on:
+  push:
+    branches:
+    - dev
+  pull_request:
+    branches:
+    - dev
+jobs:
+  build-test-code:
+    name: setup and test
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Git clone
+        uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+      - name: install python packages
+        run: pip install -r requirements.txt
+      - name: unit tests
+        run: pytest
