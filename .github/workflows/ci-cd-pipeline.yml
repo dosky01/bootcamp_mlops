@@ -39,7 +39,7 @@ jobs:
         run: make build 
 
       - name: Re-tag Docker image
-        run: docker tag $IMAGE gcr.io/$PROJECT_ID/$IMAGE:$TAG
+        run: docker tag $IMAGE gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE:$TAG
       
       - name: Setup Google Cloud CLI
         uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
