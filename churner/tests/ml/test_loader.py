@@ -2,13 +2,13 @@ import pytest
 import pandas as pd
 import yaml
 import sys
-sys.path.append('/home/dosky/Documents/churner_ml')
+sys.path.append('/home/runner/work/bootcamp_mlops/bootcamp_mlops')
 from churner.ml.utils import loader
 
 
 @pytest.fixture
 def datapath():
-    with open('/home/dosky/Documents/churner_ml/config.yaml', 'r') as file:
+    with open('/home/runner/work/bootcamp_mlops/bootcamp_mlops/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
     # Load data
     path = config['data']['datapath']
